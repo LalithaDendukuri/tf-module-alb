@@ -6,6 +6,25 @@ resource "aws_lb" "main" {
   subnets            = var.subnets
   tags =  merge(local.tags, { Name = "${var.env}-alb"})
 }
+
+resource "aws_lb_listener" "main" {
+  load_balancer_arn = aws_lb.main.arn
+  port              = "80"
+  protocol          = "HTTP"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "ERROR"
+      status_code  = "404"
+    }
+  }
+}
+
 resource "aws_security_group" "lb_sg" {
   name        = local.sg-name
   description = local.sg-name
