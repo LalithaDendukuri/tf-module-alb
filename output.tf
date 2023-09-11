@@ -1,6 +1,6 @@
-output "alb_name" {
+output "alb" {
   value = aws_lb.main
 }
 output "listener" {
-  value = ""
+  value = aws_lb_listener.main
 }
